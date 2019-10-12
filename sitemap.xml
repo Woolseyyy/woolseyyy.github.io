@@ -2,9 +2,65 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2019/10/12/hello-world/</loc>
+    <loc>https://woolseyyy.github.io/2016/05/27/splay_tree/</loc>
     
-    <lastmod>2019-10-12T01:53:20.268Z</lastmod>
+    <lastmod>2019-10-12T05:28:47.900Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/2016/05/26/avl_tree/</loc>
+    
+    <lastmod>2019-10-12T04:51:42.195Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/tags/index.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.464Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/repository/index.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.462Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/links/index.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.461Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/categories/index.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.460Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/books/index.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.458Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io/about/index.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.457Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://woolseyyy.github.io//404.html</loc>
+    
+    <lastmod>2019-10-12T01:53:21.451Z</lastmod>
     
   </url>
   

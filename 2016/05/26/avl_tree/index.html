@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>AVL Trees 学习笔记 | 回首灯火蓦阑珊</title>
+  <meta name="description" content="AVL Trees 是一种特殊的二叉搜索树，它的作用是通过自我调整，让整棵树保持平衡，从而降低整棵树的高度，以提高查找效率。 本文将首先介绍AVL Trees，然后介绍它的实现方法，性能评估，最后分析题目。   Introduction  特点 通过自我调整使树趋于平衡，降低树的高度，提高搜索效率  本质 二叉搜索树  变化 相比于二叉搜索树，有两个变化，一是每个节点增加了BF属性用于存储左子树和">
+<meta name="keywords" content="-数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AVL Trees 学习笔记">
+<meta property="og:url" content="https://woolseyyy.github.io/2016/05/26/avl_tree/index.html">
+<meta property="og:site_name" content="Woolsey&#39;s Blog">
+<meta property="og:description" content="AVL Trees 是一种特殊的二叉搜索树，它的作用是通过自我调整，让整棵树保持平衡，从而降低整棵树的高度，以提高查找效率。 本文将首先介绍AVL Trees，然后介绍它的实现方法，性能评估，最后分析题目。   Introduction  特点 通过自我调整使树趋于平衡，降低树的高度，提高搜索效率  本质 二叉搜索树  变化 相比于二叉搜索树，有两个变化，一是每个节点增加了BF属性用于存储左子树和">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTEyNzQ3MDU1?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTE0MjI5NDgw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTE0NTE2MTEy?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUxODM4MzIz?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUyMTIwNDY1?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUyMzQ5NDgx?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTYyOTM0MDY0?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTgwMjMxODc2?x-oss-process=image/format,png">
+<meta property="og:updated_time" content="2019-10-12T04:51:42.195Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="AVL Trees 学习笔记">
+<meta name="twitter:description" content="AVL Trees 是一种特殊的二叉搜索树，它的作用是通过自我调整，让整棵树保持平衡，从而降低整棵树的高度，以提高查找效率。 本文将首先介绍AVL Trees，然后介绍它的实现方法，性能评估，最后分析题目。   Introduction  特点 通过自我调整使树趋于平衡，降低树的高度，提高搜索效率  本质 二叉搜索树  变化 相比于二叉搜索树，有两个变化，一是每个节点增加了BF属性用于存储左子树和">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTEyNzQ3MDU1?x-oss-process=image/format,png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://woolseyyy.github.io/2016/05/26/avl_tree/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Woolsey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Woolseyyy" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://twitter.com/Woolsey27235329" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/基础算法/">-基础算法</a><span class="category-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">-数据结构</a><span class="tag-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/数据结构/" style="font-size: 13px;">-数据结构</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">2</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/基础算法/">-基础算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2016/05/27/splay_tree/" class="title">Splay Trees 学习笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2016-05-27T01:28:10.000Z" itemprop="datePublished">2016-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/基础算法/">-基础算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2016/05/26/avl_tree/" class="title">AVL Trees 学习笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2016-05-26T04:19:05.000Z" itemprop="datePublished">2016-05-26</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-avl_tree" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      AVL Trees 学习笔记
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/05/26/avl_tree/" class="article-date">
+	  <time datetime="2016-05-26T04:19:05.000Z" itemprop="datePublished">2016-05-26</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/基础算法/">-基础算法</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/数据结构/">-数据结构</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/26/avl_tree/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>AVL Trees 是一种特殊的二叉搜索树，它的作用是通过自我调整，让整棵树保持平衡，从而降低整棵树的高度，以提高查找效率。<br>
+本文将首先介绍AVL Trees，然后介绍它的实现方法，性能评估，最后分析题目。</p>
+<hr>
+<h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2>
+<h3 id="特点"><a class="markdownIt-Anchor" href="#特点"></a> 特点</h3>
+<p>通过自我调整使树趋于平衡，降低树的高度，提高搜索效率</p>
+<h3 id="本质"><a class="markdownIt-Anchor" href="#本质"></a> 本质</h3>
+<p>二叉搜索树</p>
+<h3 id="变化"><a class="markdownIt-Anchor" href="#变化"></a> 变化</h3>
+<p>相比于二叉搜索树，有两个变化，一是每个节点增加了BF属性用于存储左子树和右子树的高度差，二是每次增加或删除节点后都会进行调整，使之balance</p>
+<hr>
+<h2 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h2>
+<h3 id="结构"><a class="markdownIt-Anchor" href="#结构"></a> 结构</h3>
+<p>增加了BF属性的二叉搜索树</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct node* tree;</span><br><span class="line">struct node&#123;</span><br><span class="line">	element key;</span><br><span class="line">	tree left;</span><br><span class="line">	tree right;</span><br><span class="line">	int BF;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>BF = height of left tree - height of right tree<br>
+通过判断每个节点的BF值判断树是否height balanced. 若失去平衡，则开始调整。</p>
+<blockquote>
+<p><strong>Height Balanced</strong><br>
+An empty binary tree is height balanced.  If T is a nonempty binary tree with TL and TR as its left and right subtrees, then T is height balanced iff<br>
+(1)  TL and TR are height balanced, and<br>
+(2)  | hL - hR | &lt; 1 where  hL and hR are the heights of TL and TR , respectively.</p>
+</blockquote>
+<h3 id="调整触发条件"><a class="markdownIt-Anchor" href="#调整触发条件"></a> 调整触发条件</h3>
+<ol>
+<li>更新BF值</li>
+<li>从增加或删除节点的位置开始向上遍历，访问BF值</li>
+<li>若有BF&lt; -1 || BF &gt; 1 调整该节点及其子树<br>
+若一直到根节点BF都正常则无需调整</li>
+<li>调整完成，更新BF值</li>
+</ol>
+<h3 id="调整"><a class="markdownIt-Anchor" href="#调整"></a> 调整</h3>
+<p>共有 RR, LL, RL, LR 四种情况</p>
+<h4 id="rr"><a class="markdownIt-Anchor" href="#rr"></a> RR</h4>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTEyNzQ3MDU1?x-oss-process=image/format,png" alt="RR情况下的调整"></p>
+<p>需要注意的是，矩形（如BL，BR， AL）表示的不是一个节点，而是表示一棵子树，A表示的不一定是root，而是一个Trouble Maker节点。</p>
+<h4 id="ll"><a class="markdownIt-Anchor" href="#ll"></a> LL</h4>
+<p>LL情况与RR相似，它们是对称的。它们的共同点是，都是在**从 *Trouble Maker节点 *到 *其子节点 * 到 <em>子节点的子树</em> **这条路径上，旋转一次。</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTE0MjI5NDgw?x-oss-process=image/format,png" alt="LL情况下的调整"></p>
+<h4 id="lr"><a class="markdownIt-Anchor" href="#lr"></a> LR</h4>
+<p>LR和RL的情况就要稍微复杂，需要进行两次旋转。</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTE0NTE2MTEy?x-oss-process=image/format,png" alt="LR情况下的调整"></p>
+<p>这次旋转中事实上包括了两次旋转，首先是B, C, C的子树路径上进行一次左旋转：</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUxODM4MzIz?x-oss-process=image/format,png" alt="第一次旋转"></p>
+<p>然后是A, C, B路径上的第二次旋转:</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUyMTIwNDY1?x-oss-process=image/format,png" alt="第二次旋转"></p>
+<h4 id="rl"><a class="markdownIt-Anchor" href="#rl"></a> RL</h4>
+<p>RL的情况与LR情况相似</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUyMzQ5NDgx?x-oss-process=image/format,png" alt="RL情况下的旋转"></p>
+<hr>
+<h1 id="性能评估"><a class="markdownIt-Anchor" href="#性能评估"></a> 性能评估</h1>
+<p>每次操作需要遍历从最底端到root的各个节点，时间复杂度为O(h)，调整操作时间复杂度为O(1)。故每次操作时间复杂度为O(h)。<br>
+又 h = O(lnN)<br>
+故操作时间复杂度为O(lnN)</p>
+<blockquote>
+<p><strong>证明 h = O(lnN)</strong><br>
+记一个高度为h的树，节点数为n<sub>h</sub><br>
+一棵高度为h，节点数最少的树是这样的形式：</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTYyOTM0MDY0?x-oss-process=image/format,png" alt="这里写图片描述"></p>
+<p>由此我们可以得出n<sub>h</sub> = n<sub>h-1</sub> + n<sub>h-2</sub> + 1<br>
+令F<sub>i</sub> = n<sub>h</sub> + 1<br>
+有F<sub>i</sub> = F<sub>i-1</sub> + F<sub>i-2</sub><br>
+我们可以发现 F<sub>i</sub> 符合斐波那契数列，且通过将h=1, h=2, h=3 代入，我们可以得出i = h+2<br>
+即 n<sub>h+2</sub> - 1 符合斐波那契数列<br>
+根据斐波那契数列的理论  $ F_i = \frac{1}{\sqrt 5} (\frac{1+{\sqrt 5}}{2})^i $<br>
+我们可以得到  $ n_h = \frac{1}{\sqrt 5} (\frac{1+{\sqrt 5}}{2})^{h+2} - 1 $<br>
+故 h=O(lnN)</p>
+</blockquote>
+<hr>
+<h1 id="分析题目"><a class="markdownIt-Anchor" href="#分析题目"></a> 分析题目</h1>
+<blockquote>
+<p>Insert 2, 1, 4, 5, 9, 3, 6, 7 into an initially empty AVL tree. Which one of the following statements is FALSE? (1分)<br>
+A. 4 is the root<br>
+B. 2 and 6 are siblings<br>
+C. 3 and 7 are siblings<br>
+D. 9 is the parent of 7</p>
+</blockquote>
+<p>让我们来模拟插入的过程</p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTgwMjMxODc2?x-oss-process=image/format,png" alt="插入过程"></p>
+<p>故答案为C</p>
+<blockquote>
+<p>If the depth of an AVL tree is 6 (the depth of an empty tree is defined to be -1), then the minimum possible number of nodes in this tree is: (1分)<br>
+A. 13<br>
+B. 17<br>
+C. 20<br>
+D. 33</p>
+</blockquote>
+<p>在证明h=O(lnN)的过程部分我们有<br>
+n最少时，n<sub>h</sub> = n<sub>h-1</sub> + n<sub>h-2</sub> + 1<br>
+又 depth = height - 1<br>
+故n<sub>depth=6</sub> = n<sub>7</sub> = 33</p>
+<p>答案为 D</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://woolseyyy.github.io/2016/05/26/avl_tree/" title="AVL Trees 学习笔记" target="_blank" rel="external">https://woolseyyy.github.io/2016/05/26/avl_tree/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    <li class="prev">
+      <a href="/2016/05/27/splay_tree/" title="Splay Trees 学习笔记"><i class="icon icon-angle-left" aria-hidden="true"></i><span>&nbsp;&nbsp;上一篇</span></a>
+    </li>
+    
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Woolseyyy" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://twitter.com/Woolsey27235329" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '029fa925068a80216cd0',
+    clientSecret: '083c2835f3523f431a4a4825ad5307614422cb27',
+    repo: 'woolseyyy.github.io',
+    owner: 'woolseyyy',
+    admin: ['woolseyyy'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>

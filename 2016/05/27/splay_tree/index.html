@@ -17,16 +17,29 @@
   <meta http-equiv="window-target" content="_top">
   
   
-  <title>回首灯火蓦阑珊</title>
-  <meta property="og:type" content="website">
-<meta property="og:title" content="Woolsey&#39;s Blog">
-<meta property="og:url" content="https://woolseyyy.github.io/index.html">
+  <title>Splay Trees 学习笔记 | 回首灯火蓦阑珊</title>
+  <meta name="description" content="Splays Trees 也是一种二叉搜索树，用于提高连续搜索的效率。Splay Trees 通过将被访问到的节点放于根，提升访问速度。 它与AVL Trees 的效果有所区别。AVL树通过使树balanced降低树的高度至logN，从而使得单次搜索的复杂度为O(logN)。而Splay Trees则通过每次将被访问到的节点置于根，使得m次连续搜索的复杂度为O(mlogN)。 下面我们将介绍Spl">
+<meta name="keywords" content="-数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Splay Trees 学习笔记">
+<meta property="og:url" content="https://woolseyyy.github.io/2016/05/27/splay_tree/index.html">
 <meta property="og:site_name" content="Woolsey&#39;s Blog">
+<meta property="og:description" content="Splays Trees 也是一种二叉搜索树，用于提高连续搜索的效率。Splay Trees 通过将被访问到的节点放于根，提升访问速度。 它与AVL Trees 的效果有所区别。AVL树通过使树balanced降低树的高度至logN，从而使得单次搜索的复杂度为O(logN)。而Splay Trees则通过每次将被访问到的节点置于根，使得m次连续搜索的复杂度为O(mlogN)。 下面我们将介绍Spl">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyMzUzMTUx?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyNzAyNDE3?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkzMjI4MTcw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNTU2MTgz?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjIxMjk4?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjM0NDQ5?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjUzMDAy?x-oss-process=image/format,png">
+<meta property="og:updated_time" content="2019-10-12T05:28:47.900Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Woolsey&#39;s Blog">
+<meta name="twitter:title" content="Splay Trees 学习笔记">
+<meta name="twitter:description" content="Splays Trees 也是一种二叉搜索树，用于提高连续搜索的效率。Splay Trees 通过将被访问到的节点放于根，提升访问速度。 它与AVL Trees 的效果有所区别。AVL树通过使树balanced降低树的高度至logN，从而使得单次搜索的复杂度为O(logN)。而Splay Trees则通过每次将被访问到的节点置于根，使得m次连续搜索的复杂度为O(mlogN)。 下面我们将介绍Spl">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyMzUzMTUx?x-oss-process=image/format,png">
   <!-- Canonical links -->
-  <link rel="canonical" href="https://woolseyyy.github.io/index.html">
+  <link rel="canonical" href="https://woolseyyy.github.io/2016/05/27/splay_tree/index.html">
   
     <link rel="alternate" href="/atom.xml" title="Woolsey&#39;s Blog" type="application/atom+xml">
   
@@ -249,87 +262,147 @@
 </aside>
 
   
-  <main class="main" role="main">
   
-  <div class="content article-list">
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-splay_tree" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
     
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
+    <div class="article-header">
+      
+        
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/27/splay_tree/">Splay Trees 学习笔记</a>
+    <h1 class="article-title" itemprop="name">
+      Splay Trees 学习笔记
     </h1>
   
 
-  </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
+      
+      <div class="article-meta">
+        <span class="article-date">
     <i class="icon icon-calendar-check"></i>
 	<a href="/2016/05/27/splay_tree/" class="article-date">
-	  <time datetime="2016-05-27T01:28:10.000Z" itemprop="datePublished">5月 27</time>
+	  <time datetime="2016-05-27T01:28:10.000Z" itemprop="datePublished">2016-05-27</time>
 	</a>
 </span>
-    
+        
   <span class="article-category">
     <i class="icon icon-folder"></i>
     <a class="article-category-link" href="/categories/基础算法/">-基础算法</a>
   </span>
 
-    
+        
   <span class="article-tag">
     <i class="icon icon-tags"></i>
 	<a class="article-tag-link" href="/tags/数据结构/">-数据结构</a>
   </span>
 
 
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/27/splay_tree/#comments" class="article-comment-link">评论</a></span>
-    
-  </p>
-</article>
+        
 
-    
-      <article class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
-  <div class="article-header">
-    
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/05/26/avl_tree/">AVL Trees 学习笔记</a>
-    </h1>
-  
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/27/splay_tree/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>Splays Trees 也是一种二叉搜索树，用于提高连续搜索的效率。Splay Trees 通过将被访问到的节点放于根，提升访问速度。<br>
+它与AVL Trees 的效果有所区别。AVL树通过使树balanced降低树的高度至logN，从而使得<strong>单次搜索</strong>的复杂度为O(logN)。而Splay Trees则通过每次将被访问到的节点置于根，使得<strong>m次连续搜索</strong>的复杂度为O(mlogN)。<br>
+下面我们将介绍Splay Trees的实现及PTA中的相关题目。m次连续搜索复杂度为O(mlogN)我们在摊还分析博文中进行证明。</p>
+<hr>
+<h2 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h2>
+<p>根据不同的情况，Splay Trees采取不同的调整方法，直到被访问的节点置于根节点。<br>
+我们记被访问的节点为X，其父节点为P，其祖父节点为G。<br>
+首先我们将情况分为P是根节点和不是根节点。</p>
+<h3 id="p是根节点"><a class="markdownIt-Anchor" href="#p是根节点"></a> P是根节点</h3>
+<p>交换P与X。结束调整。</p>
+<h3 id="p不是根节点"><a class="markdownIt-Anchor" href="#p不是根节点"></a> P不是根节点</h3>
+<p>在该情况下，分为zig-zig情况和zig-zag情况。根据不同情况采取不同的旋转方法，旋转结束后，继续调整，直到被访问的节点处于根节点。</p>
+<h4 id="zig-zig"><a class="markdownIt-Anchor" href="#zig-zig"></a> Zig-Zig</h4>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyMzUzMTUx?x-oss-process=image/format,png" alt="zig-zig"></p>
+<p>X, P, G处于同一方向时，只需旋转一次，将X, P, G颠倒即可。</p>
+<h4 id="zig-zag"><a class="markdownIt-Anchor" href="#zig-zag"></a> Zig-Zag</h4>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyNzAyNDE3?x-oss-process=image/format,png" alt="Zig-Zag"></p>
+<p>X, P, G处于不同方向时，需要旋转两次，先旋转P, X，再旋转X, G</p>
+<h3 id="删除"><a class="markdownIt-Anchor" href="#删除"></a> 删除</h3>
+<p>在删除一个节点时，按如下步骤操作：</p>
+<ol>
+<li>找到并删除该节点</li>
+<li>访问该节点子树中最大的节点（此时该最大节点会处于该子树的根，且没有right child）</li>
+<li>使删除节点的右子树成为 左子树最大节点 的right child</li>
+</ol>
+<hr>
+<h2 id="题目"><a class="markdownIt-Anchor" href="#题目"></a> 题目</h2>
+<blockquote>
+<p>For the result of accessing the keys 3, 9, 1, 5 in order in the splay tree in the following figure, which one of the following statements is FALSE? (1分)<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkzMjI4MTcw?x-oss-process=image/format,png" alt="题目配图"><br>
+A. 5 is the root<br>
+B. 1 and 9 are siblings<br>
+C. 6 and 10 are siblings<br>
+D. 3 is the parent of 4</p>
+</blockquote>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNTU2MTgz?x-oss-process=image/format,png" alt="这里写图片描述"></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjIxMjk4?x-oss-process=image/format,png" alt="这里写图片描述"></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjM0NDQ5?x-oss-process=image/format,png" alt="这里写图片描述"></p>
+<p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjUzMDAy?x-oss-process=image/format,png" alt="这里写图片描述"></p>
+<p>答案是D</p>
 
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://woolseyyy.github.io/2016/05/27/splay_tree/" title="Splay Trees 学习笔记" target="_blank" rel="external">https://woolseyyy.github.io/2016/05/27/splay_tree/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2016/05/26/avl_tree/" title="AVL Trees 学习笔记"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
   </div>
-  
-  <p class="article-meta">
-    <span class="article-date">
-    <i class="icon icon-calendar-check"></i>
-	<a href="/2016/05/26/avl_tree/" class="article-date">
-	  <time datetime="2016-05-26T04:19:05.000Z" itemprop="datePublished">5月 26</time>
-	</a>
-</span>
-    
-  <span class="article-category">
-    <i class="icon icon-folder"></i>
-    <a class="article-category-link" href="/categories/基础算法/">-基础算法</a>
-  </span>
-
-    
-  <span class="article-tag">
-    <i class="icon icon-tags"></i>
-	<a class="article-tag-link" href="/tags/数据结构/">-数据结构</a>
-  </span>
-
-
-    <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/26/avl_tree/#comments" class="article-comment-link">评论</a></span>
-    
-  </p>
-</article>
-
-    
   </div>
+</nav>
+  
 
-   
+
 </main>
 
   <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
@@ -382,6 +455,27 @@ window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
    
 
 
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '029fa925068a80216cd0',
+    clientSecret: '083c2835f3523f431a4a4825ad5307614422cb27',
+    repo: 'woolseyyy.github.io',
+    owner: 'woolseyyy',
+    admin: ['woolseyyy'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
 
 
 

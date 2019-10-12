@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2019-10-12T01:53:20.268Z</updated>
-  <id>http://yoursite.com/</id>
+  <link href="https://woolseyyy.github.io/"/>
+  <updated>2019-10-12T05:28:47.900Z</updated>
+  <id>https://woolseyyy.github.io/</id>
   
   <author>
     <name>woolsey</name>
@@ -17,24 +17,58 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
-    <title>Hello World</title>
-    <link href="http://yoursite.com/2019/10/12/hello-world/"/>
-    <id>http://yoursite.com/2019/10/12/hello-world/</id>
-    <published>2019-10-12T02:55:54.253Z</published>
-    <updated>2019-10-12T01:53:20.268Z</updated>
+    <title>Splay Trees 学习笔记</title>
+    <link href="https://woolseyyy.github.io/2016/05/27/splay_tree/"/>
+    <id>https://woolseyyy.github.io/2016/05/27/splay_tree/</id>
+    <published>2016-05-27T01:28:10.000Z</published>
+    <updated>2019-10-12T05:28:47.900Z</updated>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="quick-start"><a class="markdownIt-Anchor" href="#quick-start"></a> Quick Start</h2><h3 id="create-a-new-post"><a class="markdownIt-Anchor" href="#create-a-new-post"></a> Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="run-server"><a class="markdownIt-Anchor" href="#run-server"></a> Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="generate-static-files"><a class="markdownIt-Anchor" href="#generate-static-files"></a> Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="deploy-to-remote-sites"><a class="markdownIt-Anchor" href="#deploy-to-remote-sites"></a> Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>Splays Trees 也是一种二叉搜索树，用于提高连续搜索的效率。Splay Trees 通过将被访问到的节点放于根，提升访问速度。<br>它与AVL Trees 的效果有所区别。AVL树通过使树balanced降低树的高度至logN，从而使得<strong>单次搜索</strong>的复杂度为O(logN)。而Splay Trees则通过每次将被访问到的节点置于根，使得<strong>m次连续搜索</strong>的复杂度为O(mlogN)。<br>下面我们将介绍Splay Trees的实现及PTA中的相关题目。m次连续搜索复杂度为O(mlogN)我们在摊还分析博文中进行证明。</p><hr><h2 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h2><p>根据不同的情况，Splay Trees采取不同的调整方法，直到被访问的节点置于根节点。<br>我们记被访问的节点为X，其父节点为P，其祖父节点为G。<br>首先我们将情况分为P是根节点和不是根节点。</p><h3 id="p是根节点"><a class="markdownIt-Anchor" href="#p是根节点"></a> P是根节点</h3><p>交换P与X。结束调整。</p><h3 id="p不是根节点"><a class="markdownIt-Anchor" href="#p不是根节点"></a> P不是根节点</h3><p>在该情况下，分为zig-zig情况和zig-zag情况。根据不同情况采取不同的旋转方法，旋转结束后，继续调整，直到被访问的节点处于根节点。</p><h4 id="zig-zig"><a class="markdownIt-Anchor" href="#zig-zig"></a> Zig-Zig</h4><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyMzUzMTUx?x-oss-process=image/format,png" alt="zig-zig"></p><p>X, P, G处于同一方向时，只需旋转一次，将X, P, G颠倒即可。</p><h4 id="zig-zag"><a class="markdownIt-Anchor" href="#zig-zag"></a> Zig-Zag</h4><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkyNzAyNDE3?x-oss-process=image/format,png" alt="Zig-Zag"></p><p>X, P, G处于不同方向时，需要旋转两次，先旋转P, X，再旋转X, G</p><h3 id="删除"><a class="markdownIt-Anchor" href="#删除"></a> 删除</h3><p>在删除一个节点时，按如下步骤操作：</p><ol><li>找到并删除该节点</li><li>访问该节点子树中最大的节点（此时该最大节点会处于该子树的根，且没有right child）</li><li>使删除节点的右子树成为 左子树最大节点 的right child</li></ol><hr><h2 id="题目"><a class="markdownIt-Anchor" href="#题目"></a> 题目</h2><blockquote><p>For the result of accessing the keys 3, 9, 1, 5 in order in the splay tree in the following figure, which one of the following statements is FALSE? (1分)<br><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MDkzMjI4MTcw?x-oss-process=image/format,png" alt="题目配图"><br>A. 5 is the root<br>B. 1 and 9 are siblings<br>C. 6 and 10 are siblings<br>D. 3 is the parent of 4</p></blockquote><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNTU2MTgz?x-oss-process=image/format,png" alt="这里写图片描述"></p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjIxMjk4?x-oss-process=image/format,png" alt="这里写图片描述"></p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjM0NDQ5?x-oss-process=image/format,png" alt="这里写图片描述"></p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI3MTAwNjUzMDAy?x-oss-process=image/format,png" alt="这里写图片描述"></p><p>答案是D</p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
+        &lt;p&gt;Splays Trees 也是一种二叉搜索树，用于提高连续搜索的效率。Splay Trees 通过将被访问到的节点放于根，提升访问速度。&lt;br&gt;
+它与AVL Trees 的效果有所区别。AVL树通过使树balanced降低树的高度至logN，从而使得&lt;strong&gt;单次搜索
       
     
     </summary>
     
     
+      <category term="-基础算法" scheme="https://woolseyyy.github.io/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="-数据结构" scheme="https://woolseyyy.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>AVL Trees 学习笔记</title>
+    <link href="https://woolseyyy.github.io/2016/05/26/avl_tree/"/>
+    <id>https://woolseyyy.github.io/2016/05/26/avl_tree/</id>
+    <published>2016-05-26T04:19:05.000Z</published>
+    <updated>2019-10-12T04:51:42.195Z</updated>
+    
+    <content type="html"><![CDATA[<p>AVL Trees 是一种特殊的二叉搜索树，它的作用是通过自我调整，让整棵树保持平衡，从而降低整棵树的高度，以提高查找效率。<br>本文将首先介绍AVL Trees，然后介绍它的实现方法，性能评估，最后分析题目。</p><hr><h2 id="introduction"><a class="markdownIt-Anchor" href="#introduction"></a> Introduction</h2><h3 id="特点"><a class="markdownIt-Anchor" href="#特点"></a> 特点</h3><p>通过自我调整使树趋于平衡，降低树的高度，提高搜索效率</p><h3 id="本质"><a class="markdownIt-Anchor" href="#本质"></a> 本质</h3><p>二叉搜索树</p><h3 id="变化"><a class="markdownIt-Anchor" href="#变化"></a> 变化</h3><p>相比于二叉搜索树，有两个变化，一是每个节点增加了BF属性用于存储左子树和右子树的高度差，二是每次增加或删除节点后都会进行调整，使之balance</p><hr><h2 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h2><h3 id="结构"><a class="markdownIt-Anchor" href="#结构"></a> 结构</h3><p>增加了BF属性的二叉搜索树</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">typedef struct node* tree;</span><br><span class="line">struct node&#123;</span><br><span class="line">element key;</span><br><span class="line">tree left;</span><br><span class="line">tree right;</span><br><span class="line">int BF;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p>BF = height of left tree - height of right tree<br>通过判断每个节点的BF值判断树是否height balanced. 若失去平衡，则开始调整。</p><blockquote><p><strong>Height Balanced</strong><br>An empty binary tree is height balanced.  If T is a nonempty binary tree with TL and TR as its left and right subtrees, then T is height balanced iff<br>(1)  TL and TR are height balanced, and<br>(2)  | hL - hR | &lt; 1 where  hL and hR are the heights of TL and TR , respectively.</p></blockquote><h3 id="调整触发条件"><a class="markdownIt-Anchor" href="#调整触发条件"></a> 调整触发条件</h3><ol><li>更新BF值</li><li>从增加或删除节点的位置开始向上遍历，访问BF值</li><li>若有BF&lt; -1 || BF &gt; 1 调整该节点及其子树<br>若一直到根节点BF都正常则无需调整</li><li>调整完成，更新BF值</li></ol><h3 id="调整"><a class="markdownIt-Anchor" href="#调整"></a> 调整</h3><p>共有 RR, LL, RL, LR 四种情况</p><h4 id="rr"><a class="markdownIt-Anchor" href="#rr"></a> RR</h4><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTEyNzQ3MDU1?x-oss-process=image/format,png" alt="RR情况下的调整"></p><p>需要注意的是，矩形（如BL，BR， AL）表示的不是一个节点，而是表示一棵子树，A表示的不一定是root，而是一个Trouble Maker节点。</p><h4 id="ll"><a class="markdownIt-Anchor" href="#ll"></a> LL</h4><p>LL情况与RR相似，它们是对称的。它们的共同点是，都是在**从 *Trouble Maker节点 *到 *其子节点 * 到 <em>子节点的子树</em> **这条路径上，旋转一次。</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTE0MjI5NDgw?x-oss-process=image/format,png" alt="LL情况下的调整"></p><h4 id="lr"><a class="markdownIt-Anchor" href="#lr"></a> LR</h4><p>LR和RL的情况就要稍微复杂，需要进行两次旋转。</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTE0NTE2MTEy?x-oss-process=image/format,png" alt="LR情况下的调整"></p><p>这次旋转中事实上包括了两次旋转，首先是B, C, C的子树路径上进行一次左旋转：</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUxODM4MzIz?x-oss-process=image/format,png" alt="第一次旋转"></p><p>然后是A, C, B路径上的第二次旋转:</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUyMTIwNDY1?x-oss-process=image/format,png" alt="第二次旋转"></p><h4 id="rl"><a class="markdownIt-Anchor" href="#rl"></a> RL</h4><p>RL的情况与LR情况相似</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTUyMzQ5NDgx?x-oss-process=image/format,png" alt="RL情况下的旋转"></p><hr><h1 id="性能评估"><a class="markdownIt-Anchor" href="#性能评估"></a> 性能评估</h1><p>每次操作需要遍历从最底端到root的各个节点，时间复杂度为O(h)，调整操作时间复杂度为O(1)。故每次操作时间复杂度为O(h)。<br>又 h = O(lnN)<br>故操作时间复杂度为O(lnN)</p><blockquote><p><strong>证明 h = O(lnN)</strong><br>记一个高度为h的树，节点数为n<sub>h</sub><br>一棵高度为h，节点数最少的树是这样的形式：</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTYyOTM0MDY0?x-oss-process=image/format,png" alt="这里写图片描述"></p><p>由此我们可以得出n<sub>h</sub> = n<sub>h-1</sub> + n<sub>h-2</sub> + 1<br>令F<sub>i</sub> = n<sub>h</sub> + 1<br>有F<sub>i</sub> = F<sub>i-1</sub> + F<sub>i-2</sub><br>我们可以发现 F<sub>i</sub> 符合斐波那契数列，且通过将h=1, h=2, h=3 代入，我们可以得出i = h+2<br>即 n<sub>h+2</sub> - 1 符合斐波那契数列<br>根据斐波那契数列的理论  $ F_i = \frac{1}{\sqrt 5} (\frac{1+{\sqrt 5}}{2})^i $<br>我们可以得到  $ n_h = \frac{1}{\sqrt 5} (\frac{1+{\sqrt 5}}{2})^{h+2} - 1 $<br>故 h=O(lnN)</p></blockquote><hr><h1 id="分析题目"><a class="markdownIt-Anchor" href="#分析题目"></a> 分析题目</h1><blockquote><p>Insert 2, 1, 4, 5, 9, 3, 6, 7 into an initially empty AVL tree. Which one of the following statements is FALSE? (1分)<br>A. 4 is the root<br>B. 2 and 6 are siblings<br>C. 3 and 7 are siblings<br>D. 9 is the parent of 7</p></blockquote><p>让我们来模拟插入的过程</p><p><img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI2MTgwMjMxODc2?x-oss-process=image/format,png" alt="插入过程"></p><p>故答案为C</p><blockquote><p>If the depth of an AVL tree is 6 (the depth of an empty tree is defined to be -1), then the minimum possible number of nodes in this tree is: (1分)<br>A. 13<br>B. 17<br>C. 20<br>D. 33</p></blockquote><p>在证明h=O(lnN)的过程部分我们有<br>n最少时，n<sub>h</sub> = n<sub>h-1</sub> + n<sub>h-2</sub> + 1<br>又 depth = height - 1<br>故n<sub>depth=6</sub> = n<sub>7</sub> = 33</p><p>答案为 D</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;AVL Trees 是一种特殊的二叉搜索树，它的作用是通过自我调整，让整棵树保持平衡，从而降低整棵树的高度，以提高查找效率。&lt;br&gt;
+本文将首先介绍AVL Trees，然后介绍它的实现方法，性能评估，最后分析题目。&lt;/p&gt;
+&lt;hr&gt;
+&lt;h2 id=&quot;introduction
+      
+    
+    </summary>
+    
+    
+      <category term="-基础算法" scheme="https://woolseyyy.github.io/categories/%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95/"/>
+    
+    
+      <category term="-数据结构" scheme="https://woolseyyy.github.io/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
     
   </entry>
   
