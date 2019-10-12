@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang=zh>
+<head><meta name="generator" content="Hexo 3.9.0">
+  <meta charset="utf-8">
+  
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, minimal-ui">
+  <meta name="renderer" content="webkit">
+  <meta http-equiv="Cache-Control" content="no-transform">
+  <meta http-equiv="Cache-Control" content="no-siteapp">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="format-detection" content="telephone=no,email=no,adress=no">
+  <!-- Color theme for statusbar -->
+  <meta name="theme-color" content="#000000">
+  <!-- 强制页面在当前窗口以独立页面显示,防止别人在框架里调用页面 -->
+  <meta http-equiv="window-target" content="_top">
+  
+  
+  <title>Red-Black Trees 红黑树 | 回首灯火蓦阑珊</title>
+  <meta name="description" content="红黑树是另一种自平衡二叉查找树。它通过较为复杂的调整，实现一种“局部平衡”。它的性能较为高效，应用广泛，被应用于linux内核进程调度，实现关联数组等。 本文将首先介绍红黑树的特点及其与AVL树的比较，然后说明红黑树的实现方式，评价红黑树的性能，最后对红黑树进行实践。  #红黑树的特点  本节将整体介绍红黑树的特点，目的是探究红黑树的特点和优异之处。完全不了解红黑树的读者可以先跳过本节，在阅读完红">
+<meta name="keywords" content="-数据结构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Red-Black Trees 红黑树">
+<meta property="og:url" content="https://woolseyyy.github.io/2016/05/29/Red-Black_Trees/index.html">
+<meta property="og:site_name" content="Woolsey&#39;s Blog">
+<meta property="og:description" content="红黑树是另一种自平衡二叉查找树。它通过较为复杂的调整，实现一种“局部平衡”。它的性能较为高效，应用广泛，被应用于linux内核进程调度，实现关联数组等。 本文将首先介绍红黑树的特点及其与AVL树的比较，然后说明红黑树的实现方式，评价红黑树的性能，最后对红黑树进行实践。  #红黑树的特点  本节将整体介绍红黑树的特点，目的是探究红黑树的特点和优异之处。完全不了解红黑树的读者可以先跳过本节，在阅读完红">
+<meta property="og:locale" content="zh-CN">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI5MTIzNDA5OTc3?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTg0NzEzODQy?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTg1ODQxMTkw?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkwMDU4NzM4?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkwNDI5Njky?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkwOTM3ODgy?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxMzIyMjg2?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxMzMyNzg2?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxNTQyNTU2?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxNTA0NzU4?x-oss-process=image/format,png">
+<meta property="og:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxNTE4Nzkw?x-oss-process=image/format,png">
+<meta property="og:updated_time" content="2019-10-12T05:31:41.816Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Red-Black Trees 红黑树">
+<meta name="twitter:description" content="红黑树是另一种自平衡二叉查找树。它通过较为复杂的调整，实现一种“局部平衡”。它的性能较为高效，应用广泛，被应用于linux内核进程调度，实现关联数组等。 本文将首先介绍红黑树的特点及其与AVL树的比较，然后说明红黑树的实现方式，评价红黑树的性能，最后对红黑树进行实践。  #红黑树的特点  本节将整体介绍红黑树的特点，目的是探究红黑树的特点和优异之处。完全不了解红黑树的读者可以先跳过本节，在阅读完红">
+<meta name="twitter:image" content="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI5MTIzNDA5OTc3?x-oss-process=image/format,png">
+  <!-- Canonical links -->
+  <link rel="canonical" href="https://woolseyyy.github.io/2016/05/29/Red-Black_Trees/index.html">
+  
+    <link rel="alternate" href="/atom.xml" title="Woolsey&#39;s Blog" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png" type="image/x-icon">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+  
+  
+  
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.css">
+  
+</head>
+
+
+<body class="main-center theme-purple" itemscope itemtype="http://schema.org/WebPage">
+  <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+  <div class="slimContent">
+    <div class="navbar-header">
+      
+      <div class="search" id="search-form-wrap">
+
+    <form class="search-form sidebar-form">
+        <div class="input-group">
+            <input type="text" class="search-form-input form-control" placeholder="搜索" />
+            <span class="input-group-btn">
+                <button type="submit" class="search-form-submit btn btn-flat" onclick="return false;"><i class="icon icon-search"></i></button>
+            </span>
+        </div>
+    </form>
+    <div class="ins-search">
+  <div class="ins-search-mask"></div>
+  <div class="ins-search-container">
+    <div class="ins-input-wrapper">
+      <input type="text" class="ins-search-input" placeholder="想要查找什么..." x-webkit-speech />
+      <button type="button" class="close ins-close ins-selectable" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+    </div>
+    <div class="ins-section-wrapper">
+      <div class="ins-section-container"></div>
+    </div>
+  </div>
+</div>
+
+
+</div>
+      <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#main-navbar" aria-controls="main-navbar" aria-expanded="false">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <nav id="main-navbar" class="collapse navbar-collapse" itemscope itemtype="http://schema.org/SiteNavigationElement" role="navigation">
+      <ul class="nav navbar-nav main-nav ">
+        
+        
+        <li class="menu-item menu-item-home">
+          <a href="/.">
+            
+            <i class="icon icon-home-fill"></i>
+            
+            <span class="menu-title">首页</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives">
+            
+            <i class="icon icon-archives-fill"></i>
+            
+            <span class="menu-title">归档</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories">
+            
+            <i class="icon icon-folder"></i>
+            
+            <span class="menu-title">分类</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags">
+            
+            <i class="icon icon-tags"></i>
+            
+            <span class="menu-title">标签</span>
+          </a>
+        </li>
+        
+        
+        <li class="menu-item menu-item-repository">
+          <a href="/repository">
+            
+            <i class="icon icon-project"></i>
+            
+            <span class="menu-title">项目</span>
+          </a>
+        </li>
+        
+      </ul>
+      
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Woolseyyy" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://twitter.com/Woolsey27235329" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    </nav>
+  </div>
+</header>
+
+  
+    <aside class="sidebar" itemscope itemtype="http://schema.org/WPSideBar">
+  <div class="slimContent">
+    
+      <div class="widget">
+    <h3 class="widget-title">公告</h3>
+    <div class="widget-body">
+        <div id="board">
+            <div class="content">
+                <p>欢迎交流与分享经验!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">分类</h3>
+    <div class="widget-body">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/基础算法/">-基础算法</a><span class="category-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签</h3>
+    <div class="widget-body">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/数据结构/">-数据结构</a><span class="tag-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">标签云</h3>
+    <div class="widget-body tagcloud">
+      <a href="/tags/数据结构/" style="font-size: 13px;">-数据结构</a>
+    </div>
+  </div>
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">归档</h3>
+    <div class="widget-body">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/05/">五月 2016</a><span class="archive-list-count">4</span></li></ul>
+    </div>
+  </div>
+
+
+    
+      
+  <div class="widget">
+    <h3 class="widget-title">最新文章</h3>
+    <div class="widget-body">
+      <ul class="recent-post-list list-unstyled no-thumbnail">
+        
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/基础算法/">-基础算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2016/05/29/Red-Black_Trees/" class="title">Red-Black Trees 红黑树</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2016-05-29T01:40:22.000Z" itemprop="datePublished">2016-05-29</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/基础算法/">-基础算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2016/05/27/Amortized_Analysis/" class="title">Amortized Analysis</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2016-05-27T01:28:10.000Z" itemprop="datePublished">2016-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/基础算法/">-基础算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2016/05/27/splay_tree/" class="title">Splay Trees 学习笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2016-05-27T01:28:10.000Z" itemprop="datePublished">2016-05-27</time>
+              </p>
+            </div>
+          </li>
+          
+          <li>
+            
+            <div class="item-inner">
+              <p class="item-category">
+                <a class="category-link" href="/categories/基础算法/">-基础算法</a>
+              </p>
+              <p class="item-title">
+                <a href="/2016/05/26/avl_tree/" class="title">AVL Trees 学习笔记</a>
+              </p>
+              <p class="item-date">
+                <time datetime="2016-05-26T04:19:05.000Z" itemprop="datePublished">2016-05-26</time>
+              </p>
+            </div>
+          </li>
+          
+      </ul>
+    </div>
+  </div>
+  
+
+    
+  </div>
+</aside>
+
+  
+  
+<main class="main" role="main">
+  <div class="content">
+  <article id="post-Red-Black_Trees" class="article article-type-post" itemscope itemtype="http://schema.org/BlogPosting">
+    
+    <div class="article-header">
+      
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Red-Black Trees 红黑树
+    </h1>
+  
+
+      
+      <div class="article-meta">
+        <span class="article-date">
+    <i class="icon icon-calendar-check"></i>
+	<a href="/2016/05/29/Red-Black_Trees/" class="article-date">
+	  <time datetime="2016-05-29T01:40:22.000Z" itemprop="datePublished">2016-05-29</time>
+	</a>
+</span>
+        
+  <span class="article-category">
+    <i class="icon icon-folder"></i>
+    <a class="article-category-link" href="/categories/基础算法/">-基础算法</a>
+  </span>
+
+        
+  <span class="article-tag">
+    <i class="icon icon-tags"></i>
+	<a class="article-tag-link" href="/tags/数据结构/">-数据结构</a>
+  </span>
+
+
+        
+
+        <span class="post-comment"><i class="icon icon-comment"></i> <a href="/2016/05/29/Red-Black_Trees/#comments" class="article-comment-link">评论</a></span>
+        
+      </div>
+    </div>
+    <div class="article-entry marked-body" itemprop="articleBody">
+      
+        <p>红黑树是另一种自平衡二叉查找树。它通过较为复杂的调整，实现一种“局部平衡”。它的性能较为高效，应用广泛，被应用于linux内核进程调度，实现关联数组等。<br>
+本文将首先介绍红黑树的特点及其与AVL树的比较，然后说明红黑树的实现方式，评价红黑树的性能，最后对红黑树进行实践。</p>
+<hr>
+<p>#红黑树的特点</p>
+<blockquote>
+<p>本节将整体介绍红黑树的特点，目的是探究红黑树的特点和优异之处。完全不了解红黑树的读者可以先跳过本节，在阅读完红黑树的实现之后再来阅读本节。</p>
+</blockquote>
+<p>红黑树是一种自平衡的二叉查找树。它的实现机制非常复杂，所以一直困扰我的一个疑问是：为什么在逻辑简单的AVL树之后人们还要发明这样一种实现复杂的树，并且红黑树的应用比AVL树更为广泛？<br>
+AVL树是最早的一种自平衡二叉搜索树。如果说伸展树是为了节省AVL树节点中的height属性，那么红黑树，一棵这么复杂的树，的存在又是为了什么呢？<br>
+平衡二叉树的追求的是全局均衡，如在做插入，删除操作时，需要调整整棵树，显然这是费时的，因此希望在做调整时，是局部调整，因此提出了红黑树，这样一种高效的数据结构(也是最变态的一种数据结构)。<br>
+区别于严格平衡的AVL树，红黑树的自平衡是一种“<strong>局部平衡</strong>”——<strong>它只要求部分地达到平衡要求，降低了对旋转的要求，从而提高了性能。<strong>红黑树对以往的数据不会过多的调整，且可以保证任何不平衡在三次以内的旋转得到解决，红黑树的算法时间复杂度和AVL相同，但</strong>统计性能</strong>比AVL树更高。<br>
+红黑树在删除时节点旋转次数是O(1)，平衡因子调整次数是O(logn)，而AVL树则两者都是O(logn)。红黑树和AVL树在插入时，节点旋转次数都是O(1)，平衡因子调整次数都是O(logn)。</p>
+<blockquote>
+<p><strong>AVL树的删除</strong><br>
+<a href="https://en.wikipedia.org/wiki/AVL_tree#Deletion" target="_blank" rel="noopener">引自维基百科：</a><br>
+Let node X be the node which we have to delete, and let node Y be a node in the tree we need to find to take node X’s place, and let node Z be the actual node we take out of the tree.<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTI5MTIzNDA5OTc3?x-oss-process=image/format,png" alt="Deleting a node with two children from a binary search tree using the in-order predecessor (rightmost node in the left subtree, labelled 6)."><br>
+Steps to consider when deleting a node in an AVL tree are the following:</p>
+<ol>
+<li>If node X is a leaf or has only one child, skip to step 5 with Z:=X.</li>
+<li>Otherwise, determine node Y by finding the smallest[8] node in node X’s right subtree (the in-order successor of X − it does not have a left child) or the largest in its left subtree (the in-order predecessor of X − it does not have a right child).</li>
+<li>Exchange all the child and parent links of node X with those of node Y. In this step, the in-order sequence between nodes X and Y is temporarily disturbed, but the tree structure doesn’t change.</li>
+<li>Choose node Z to be all the child and parent links of old node Y = those of new node X.</li>
+<li>If node Z has a subtree (which then is a leaf), attach it to Z’s parent.</li>
+<li>If node Z was the root (its parent is null), update root.</li>
+<li>Delete node Z.</li>
+<li>Retrace the path back up the tree (starting with node Z’s parent) to the root, adjusting the balance factors as needed.<br>
+Since with a single deletion the height of an AVL subtree cannot decrease by more than one, the temporary balance factor of a node will be in the range from −2 to +2.<br>
+If the balance factor becomes ±2 then the subtree is unbalanced and needs to be rotated. The various cases of rotations are described in section <a href="https://en.wikipedia.org/wiki/AVL_tree#Rebalancing" target="_blank" rel="noopener">Rebalancing</a>.</li>
+</ol>
+<p>仔细研究rebalancing，我们可以发现，insertion下，旋转后与插入后子树的高度相同，而deletion下，旋转后树的高度会变化。所以删除的旋转可能会进行O(logN)次。<br>
+（在<a href="http://blog.csdn.net/woolseyyy/article/details/51505383" target="_blank" rel="noopener">AVL Trees 学习笔记</a>一文中，主要是根据上课的课件所做的整理，所以并没有考虑删除的情况。笔者目前暂时不对AVL树的插入、删除、旋转及其实现做详细的说明，若有需求可以参考<a href="https://en.wikipedia.org/wiki/AVL_tree" target="_blank" rel="noopener">维基百科中对AVL树的说明</a>）</p>
+</blockquote>
+<p>因此，在动态数据的方面，红黑树的表现要优于AVL树。这也是为什么红黑树被应用于linux内核进程调度、关联数组。</p>
+<hr>
+<h1 id="实现"><a class="markdownIt-Anchor" href="#实现"></a> 实现</h1>
+<h2 id="定义"><a class="markdownIt-Anchor" href="#定义"></a> 定义</h2>
+<p>A red-black tree is a binary search tree that satisfies the following red-black properties:</p>
+<ol>
+<li>Every node is either <strong>red</strong> or <strong>blac</strong>k.</li>
+<li>The root is <strong>black</strong>.</li>
+<li>Every leaf (NIL) is <strong>black</strong>.</li>
+<li>If a node is <strong>red</strong>, then both its children are <strong>black</strong>.</li>
+<li>For each node, all simple paths from the node to descendant leaves contain <strong>the same number of black nodes</strong>.</li>
+</ol>
+<h2 id="插入"><a class="markdownIt-Anchor" href="#插入"></a> 插入</h2>
+<p>若在 <strong>黑节点</strong> 下插入，只需让插入节点为红色即可。</p>
+<p>若在红节点下插入，而红节点<strong>没有sibling node</strong>，如在下图插入的“9”节点：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTg0NzEzODQy?x-oss-process=image/format,png" alt="红节点插入"><br>
+只需将7，8，9进行旋转，将其中的父节点置于黑色即可。</p>
+<p>若红节点的sibling node是黑节点，我们可以证明这样的情况不存在因为这样这两个节点的父节点将违反第五条原则(For each node, all simple paths from the node to descendant leaves contain <strong>the same number of black nodes</strong>):<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTg1ODQxMTkw?x-oss-process=image/format,png" alt="红黑节点为兄弟节点"></p>
+<p>最后只剩下在红节点下插入节点，且红节点的兄弟节点为红节点，且它的父节点一定为黑色节点，也就是这样的情况：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkwMDU4NzM4?x-oss-process=image/format,png" alt="case1"><br>
+在这样的情况下，我们只需要将颜色变化即可。<br>
+此时，若树遵循红黑树定义，则停止调整，但也有可能调整后会出现这样的情况：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkwNDI5Njky?x-oss-process=image/format,png" alt="第一次调整后的情况"><br>
+若是case1， 则我们将其通过旋转转换为case2，再继续进行调整。<br>
+首先变换颜色，然后再进行一次旋转，调整结束。<br>
+因为此时父节点为黑色，所以此时的树一定满足红黑树定义，不需要再进行调整。</p>
+<p>通过上面的过程我们可以看到，红黑树的插入最多进行三次旋转。</p>
+<p>对称的情况不予赘述。<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkwOTM3ODgy?x-oss-process=image/format,png" alt="对称情况"></p>
+<blockquote>
+<p><strong>插入的例子</strong></p>
+<p>插入前：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxMzIyMjg2?x-oss-process=image/format,png" alt="1"></p>
+<p>插入4：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxMzMyNzg2?x-oss-process=image/format,png" alt="2"></p>
+<p>变换颜色，但上一层不满足红黑树定义了：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxNTQyNTU2?x-oss-process=image/format,png" alt="3"></p>
+<p>旋转，变换为case2：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxNTA0NzU4?x-oss-process=image/format,png" alt="4"></p>
+<p>变色并旋转：<br>
+<img src="https://imgconvert.csdnimg.cn/aHR0cDovL2ltZy5ibG9nLmNzZG4ubmV0LzIwMTYwNTMxMTkxNTE4Nzkw?x-oss-process=image/format,png" alt="5"></p>
+<p>结束</p>
+</blockquote>
+<p>待续</p>
+
+      
+    </div>
+    <div class="article-footer">
+      <blockquote class="mt-2x">
+  <ul class="post-copyright list-unstyled">
+    
+    <li class="post-copyright-link hidden-xs">
+      <strong>本文链接：</strong>
+      <a href="https://woolseyyy.github.io/2016/05/29/Red-Black_Trees/" title="Red-Black Trees 红黑树" target="_blank" rel="external">https://woolseyyy.github.io/2016/05/29/Red-Black_Trees/</a>
+    </li>
+    
+    <li class="post-copyright-license">
+      <strong>版权声明： </strong> 本博客所有文章除特别声明外，均采用 <a href="http://creativecommons.org/licenses/by/4.0/deed.zh" target="_blank" rel="external">CC BY 4.0 CN协议</a> 许可协议。转载请注明出处！
+    </li>
+  </ul>
+</blockquote>
+
+
+    </div>
+  </article>
+  
+    
+  <section id="comments">
+  	
+           
+    
+  </section>
+
+
+  
+</div>
+
+  <nav class="bar bar-footer clearfix" data-stick-bottom>
+  <div class="bar-inner">
+  
+  <ul class="pager pull-left">
+    
+    
+    <li class="next">
+      <a href="/2016/05/27/Amortized_Analysis/" title="Amortized Analysis"><span>下一篇&nbsp;&nbsp;</span><i class="icon icon-angle-right" aria-hidden="true"></i></a>
+    </li>
+    
+    
+  </ul>
+  
+  
+  
+  <div class="bar-right">
+    
+    <div class="share-component" data-sites="weibo,qq,wechat,facebook,twitter" data-mobile-sites="weibo,qq,qzone"></div>
+    
+  </div>
+  </div>
+</nav>
+  
+
+
+</main>
+
+  <footer class="footer" itemscope itemtype="http://schema.org/WPFooter">
+	
+	
+    <ul class="social-links">
+    	
+        <li><a href="https://github.com/Woolseyyy" target="_blank" title="Github" data-toggle=tooltip data-placement=top><i class="icon icon-github"></i></a></li>
+        
+        <li><a href="https://twitter.com/Woolsey27235329" target="_blank" title="Twitter" data-toggle=tooltip data-placement=top><i class="icon icon-twitter"></i></a></li>
+        
+    </ul>
+
+    <div class="copyright">
+    	
+        <div class="publishby">
+        	Theme by <a href="https://github.com/cofess" target="_blank"> cofess </a>base on <a href="https://github.com/cofess/hexo-theme-pure" target="_blank">pure</a>.
+        </div>
+    </div>
+</footer>
+  <script src="//cdn.jsdelivr.net/npm/jquery@1.12.4/dist/jquery.min.js"></script>
+<script>
+window.jQuery || document.write('<script src="js/jquery.min.js"><\/script>')
+</script>
+<script src="/js/plugin.min.js"></script>
+<script src="/js/application.js"></script>
+
+    <script>
+(function (window) {
+    var INSIGHT_CONFIG = {
+        TRANSLATION: {
+            POSTS: '文章',
+            PAGES: '页面',
+            CATEGORIES: '分类',
+            TAGS: '标签',
+            UNTITLED: '(未命名)',
+        },
+        ROOT_URL: '/',
+        CONTENT_URL: '/content.json',
+    };
+    window.INSIGHT_CONFIG = INSIGHT_CONFIG;
+})(window);
+</script>
+<script src="/js/insight.js"></script>
+
+
+
+
+
+   
+
+
+
+
+   
+    
+  <!-- <link rel="stylesheet" href="https://unpkg.com/gitalk/dist/gitalk.css"> -->
+  <script src="//cdn.jsdelivr.net/npm/gitalk@1.4.0/dist/gitalk.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/blueimp-md5@2.10.0/js/md5.min.js"></script>
+  <script type="text/javascript">
+  var gitalk = new Gitalk({
+    clientID: '029fa925068a80216cd0',
+    clientSecret: '083c2835f3523f431a4a4825ad5307614422cb27',
+    repo: 'woolseyyy.github.io',
+    owner: 'woolseyyy',
+    admin: ['woolseyyy'],
+    id: md5(location.pathname),
+    distractionFreeMode: true
+  })
+  gitalk.render('comments')
+  </script>
+
+      
+
+
+
+
+
+
+
+</body>
+</html>
