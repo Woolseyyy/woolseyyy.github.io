@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://woolseyyy.github.io/"/>
-  <updated>2019-10-12T05:31:41.816Z</updated>
+  <updated>2019-11-28T11:48:32.606Z</updated>
   <id>https://woolseyyy.github.io/</id>
   
   <author>
@@ -15,6 +15,33 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>移动端开发相关经历介绍</title>
+    <link href="https://woolseyyy.github.io/2019/11/28/app/"/>
+    <id>https://woolseyyy.github.io/2019/11/28/app/</id>
+    <published>2019-11-28T11:00:00.000Z</published>
+    <updated>2019-11-28T11:48:32.606Z</updated>
+    
+    <content type="html"><![CDATA[<p>以下展示一些有代表性的安卓相关项目，所有项目均是本人独立完成开发。</p><h1 id="fingerdj-安卓游戏项目"><a class="markdownIt-Anchor" href="#fingerdj-安卓游戏项目"></a> FingerDJ - 安卓游戏项目</h1><p><img src="https://github.com/Woolseyyy/fingerDJ/raw/master/img/demo.png" alt="fingerdj"></p><p>该项目为安卓应用，基本实现了DJ打碟功能，包括：</p><ul><li>两段音频混合</li><li>添加音效</li><li>音碟封面旋转</li><li>通过旋转音碟控制</li><li>录制保存</li></ul><p>涉及音频读取、保存；底层音乐编辑与播放；音波混合算法；自由化安卓控制等技术点。</p><h1 id="tracerecorder-安卓应用"><a class="markdownIt-Anchor" href="#tracerecorder-安卓应用"></a> TraceRecorder - 安卓应用</h1><p>该项目为给某实验室做的外包项目，不便细致展示。</p><p>项目功能为：</p><ul><li>帮助志愿者记录每日的出行方式</li><li>后台数据记录、展示与分析</li><li>利用后端的机器学习算法实现用户出行方式推荐</li></ul><p>涉及定位、地图显示、轨迹展示等地理位置相关功能；前后端数据通信；后台数据管理等技术点。</p><h1 id="智能货架-安卓应用"><a class="markdownIt-Anchor" href="#智能货架-安卓应用"></a> 智能货架 - 安卓应用</h1><p>该项目为在某VR新零售公司实习时的一个负责项目，不便细致展示。</p><p>项目功能为：</p><ul><li>VR全景图渲染、展示</li><li>基本商城功能</li><li>与蓝牙设备通讯交互</li><li>与RFID设备通讯交互</li></ul><p>涉及图形学渲染；网络通讯；蓝牙通讯；RFID设备通讯等技术点。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;以下展示一些有代表性的安卓相关项目，所有项目均是本人独立完成开发。&lt;/p&gt;
+&lt;h1 id=&quot;fingerdj-安卓游戏项目&quot;&gt;&lt;a class=&quot;markdownIt-Anchor&quot; href=&quot;#fingerdj-安卓游戏项目&quot;&gt;&lt;/a&gt; FingerDJ - 安卓游戏项
+      
+    
+    </summary>
+    
+    
+      <category term="-简历" scheme="https://woolseyyy.github.io/categories/%E7%AE%80%E5%8E%86/"/>
+    
+    
+      <category term="-简历" scheme="https://woolseyyy.github.io/tags/%E7%AE%80%E5%8E%86/"/>
+    
+  </entry>
   
   <entry>
     <title>Red-Black Trees 红黑树</title>
