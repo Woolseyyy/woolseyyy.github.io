@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NeFII: Inverse Rendering for Reflectance Decomposition with Near-Field Indirect Illumination</title>
+    <!-- Bootstrap -->
+    <link href="css/bootstrap-4.4.1.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"> 
+  </head>
+
+  <!-- cover -->
+  <section>
+    <div class="jumbotron text-center mt-0">
+      <div class="container">
+        <div class="row">
+          <div class="col-12">
+            <h2>NeFII: Inverse Rendering for Reflectance Decomposition with <br>  Near-Field Indirect Illumination</h2>
+            <h4 style="color:#5a6268;">CVPR 2023</h4>
+            <hr>
+            <h6> 
+                <a href="https://github.com/Woolseyyy" target="_blank">Haoqian Wu</a><sup>1</sup>, 
+                Zhipeng Hu<sup>1,2</sup>, 
+                <a href="https://scholar.google.com/citations?user=NYLsVscAAAAJ&hl=zh-CN" target="_blank">Lincheng Li</a><sup>1</sup>,
+                Changjie Fan<sup>1</sup>,
+                <a href="https://sites.google.com/view/xinyus-homepage/Home" target="_blank">Xin Yu</a><sup>3</sup>
+            </h6>
+            <p>
+              <sup>1</sup>NetEase Fuxi AI Lab &nbsp;&nbsp; 
+              <sup>2</sup>Zhejiang University &nbsp;&nbsp; 
+              <sup>3</sup>The University of Queensland
+            </p>
+                
+            <div class="row justify-content-center">
+              <div class="column">
+                  <p class="mb-5"><a class="btn btn-large btn-light" href="https://arxiv.org/abs/2303.16617" role="button"  target="_blank">
+                    <i class="fa fa-file"></i> Paper</a> </p>
+              </div>
+              <!-- <div class="column">
+                <p class="mb-5"><a class="btn btn-large btn-light" href="https://github.com/zju3dv/invrender" role="button"  target="_blank">
+                  <i class="fa fa-github-alt"></i> Code</a> </p>
+              </div>
+              <div class="column">
+                  <p class="mb-5"><a class="btn btn-large btn-light" href="https://drive.google.com/file/d/1wWWu7EaOxtVq8QNalgs6kDqsiAm7xsRh/view?usp=sharing" role="button">
+                    <i class="fa fa-database"></i> Data</a> </p>
+              </div> -->
+              <!-- <div class="column">
+                  <p class="mb-5"><a class="btn btn-large btn-light" href="" role="button">
+                    <i class="fa fa-file"></i> Supplementary </a> </p>
+              </div> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- abstract -->
+  <section>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+          <h3>Abstract</h3>
+            <hr style="margin-top:0px">
+          <p class="text-left"> 
+          Inverse rendering methods aim to estimate geometry, materials and illumination from multi-view RGB images. In order to achieve better decomposition, recent approaches attempt to model indirect illuminations reflected from different materials via Spherical Gaussians (SG), which, however, tends to blur the high-frequency reflection details. In this paper, we propose an end-to-end inverse rendering pipeline that decomposes materials and illumination from multi-view images, while considering near-field indirect illumination. In a nutshell, we introduce the Monte Carlo sampling based path tracing and cache the indirect illumination as neural radiance, enabling a physics-faithful and easy-to-optimize inverse rendering method. To enhance efficiency and practicality, we leverage SG to represent the smooth environment illuminations and apply importance sampling techniques. To supervise indirect illuminations from unobserved directions, we develop a novel radiance consistency constraint between implicit neural radiance and path tracing results of unobserved rays along with the joint optimization of materials and illuminations, thus significantly improving the decomposition performance. Extensive experiments demonstrate that our method outperforms the state-of-the-art on multiple synthetic and real datasets, especially in terms of inter-reflection decomposition.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br>
+
+  <!-- overview video -->
+<section>
+    <div class="container">
+      <div class="row">
+        <div class="col-12 text-center">
+            <h3>Overview video</h3>
+            <hr style="margin-top:0px">
+            <!-- <div class="embed-responsive embed-responsive-16by9">
+                <iframe width="950" height="534" src="https://www.youtube.com/embed/2jEPVr2JHh8" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>  -->
+            
+        </div>
+      </div>
+    </div>
+  </section>
+  <br>
+
+  <!-- citing -->
+  <div class="container">
+    <div class="row ">
+      <div class="col-12">
+          <h3>Citation</h3>
+          <hr style="margin-top:0px">
+              <pre style="background-color: #e9eeef;padding: 1.25em 1.5em">
+
+<code>@InProceedings{Wu_2023_CVPR,
+    author    = {Wu, Haoqian and Hu, Zhipeng and Li, Lincheng and Zhang, Yongqiang and Fan, Changjie and Yu, Xin},
+    title     = {NeFII: Inverse Rendering for Reflectance Decomposition With Near-Field Indirect Illumination},
+    booktitle = {Proceedings of the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR)},
+    month     = {June},
+    year      = {2023},
+    pages     = {4295-4304}
+  } 
+</code></pre>
+          <hr>
+      </div>
+    </div>
+  </div>
+
+  <footer class="text-center" style="margin-bottom:10px">
+      Thanks to <a href="https://lioryariv.github.io/" target="_blank">Lior Yariv</a> for the website template.
+  </footer>
+
+</body>
+</html>
